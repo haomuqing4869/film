@@ -1,0 +1,327 @@
+
+body{
+    background-color: #f2f2f2;
+}
+
+/* 轮播图 */
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+
+.slide{
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* 内容，电影items */
+.mod_hd{
+    width: 100%;
+    margin-top: 30px;
+}
+.mod_hd .mod_hd_list{
+    width: 90%;
+    padding-left: 40px;
+    margin: 0 auto;
+    background-color: rgb(248, 248, 248);
+}
+.mod_hd .mod_hd_list .mod{
+    font-size: 18px;
+    color: white;
+    padding: 5px;
+    border: 1px solid rgb(127, 127, 140);
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    text-align: center; 
+    line-height: 50px;
+    background-color: rgb(127, 127, 140);
+}
+
+.mod_items{
+    display: inline-block;
+    font-size: 18px;
+    color: rgb(153, 153, 153);
+    padding: 10px;
+    box-sizing: content-box;
+}
+
+
+.mod_items:first-of-type{
+    margin-left: 25px;
+}
+
+.mod_items:hover{
+    color:orangered
+}
+
+/* 右边top10 */
+.slide .top{
+    position: absolute;
+    height: 100%;
+    top: 68px;
+    right: 0;
+    width: 318px;
+    background-color: rgba(15, 15, 30, 0.4);
+}
+.top ul{
+    padding: 20px;
+}
+
+.top ul h3{
+    font-weight: 600;
+    color: white;
+    margin-bottom: 25px;
+}
+.top ul h3:hover{
+    color: #ff5c38;
+}
+
+.top li{
+    height: 28px;
+    margin: 5px;
+}
+
+
+.first{
+    margin-top: 20px;
+}
+.top li a{
+    text-decoration: none;
+    color:#f8f8f8;
+    font-size: 16px;
+    font-weight: 400;
+    width: 100%;
+    height: 100%;
+    
+}
+.top li:hover a{
+    font-size: 24px;
+    color: #ff5c38;
+}
+
+
+/* 电影列表 */
+
+.movies_main{
+    width: 100%;
+    height: auto;
+    padding-top: 35px;
+}
+.movies_main .section{
+    width: 85%;
+    margin: 0 auto;
+    margin-bottom: 35px;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 5px;
+}
+
+.section .movies_items{
+    width: 66.6%;
+    float: left;
+}
+
+.section .movies_items2{
+    width: 100%;
+}
+
+.items_header{
+    margin-bottom: 10px;
+}
+
+.items_header h2{
+    float: left;
+}
+
+.items_header p{
+    float: right;
+    height: 38px;
+    margin-bottom: 8px;
+}
+
+.items_header p a{
+    height: 100%;
+    line-height: 38px;
+    color: #7c7c7c;
+    margin-right: 25px;
+}
+
+.section .right_aside{
+    width: 33%;
+    float: right;
+}
+
+.right_aside .right_header h2{
+    float: left;
+}
+
+.right_header p{
+    float: right;
+    height: 38px;
+    margin-bottom: 8px;
+}
+
+.right_header p a{
+    height: 100%;
+    line-height: 38px;
+    color: #7c7c7c;
+    margin-right: 25px;
+}
+
+.right-content{
+    padding: 10px;
+}
+
+.right-content .ul_left{
+    float: left;
+    width: 50%;
+}
+
+.right-content .ul_right{
+    float: right;
+    width: 50%;
+}
+
+ul li{
+    width: 100%;
+    height: 36px;
+}
+
+li a{
+    width: 100%;
+    color: black;
+    text-decoration: none;
+}
+
+li a:hover{
+    color: cornflowerblue;
+}
+
+.ul_left li span,.ul_right li span{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+    background-color: #609fbf;
+    color: white;
+}
+
+.ul_left li:first-child span
+,.ul_left li:nth-child(2) span 
+,.ul_left li:nth-child(3) span{
+    background-color: #ff5c38;
+}
+
+.advertise{
+    width: 100%;
+}
+
+.advertise img{
+    width: 100%;
+}
+
+.ad_2{
+    width: 100%;
+    height: 256px;
+    margin-top: 40px;
+}
+
+.message{
+    width: 183px;
+    height: 337px;
+    margin: 0 15px 18px 0;
+    display: inline-block;
+}
+.message a{
+    text-decoration: none;
+}
+.message .message_img{
+    position: relative;
+}
+
+.message .message_img img{
+    width: 183px;
+    height: 257px;
+
+}
+
+.message a .data{
+    display: block;
+    color: black;
+}
+
+.message a p{
+    width: 183px;
+    height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: gray;
+}
+
+.kongbai{
+    background-color: white;
+    width: 85%;
+    padding: 25px;
+    margin: 0 auto;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.kongbai .img_auto{
+    width: 772px;
+    margin: 0 auto;
+}
+
+/* footer */
+footer{
+    width: 100%;
+    padding: 30px;
+    border-top: 2px #7c7c7c dashed;
+    background-color: #20232c;
+}
+footer .footer_main{
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.footer_main p{
+    color: #808080;
+    font-size: 16px;
+    text-align: center;
+}
+
+.footer_main p span{
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.name_price h3{
+    float: left;
+    margin: 0;
+    font-size: 18px;
+    width: 140px;
+    height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: black;
+}
+
+.name_price .price{
+    float: right;
+    color: red;
+    font-weight: 600;
+}

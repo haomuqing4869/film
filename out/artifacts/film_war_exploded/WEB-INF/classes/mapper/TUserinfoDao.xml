@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TUserinfoDao">
+
+    <resultMap type="com.zxl.entity.TUserinfo" id="TUserinfoMap">
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="userphoto" column="userPhoto" jdbcType="VARCHAR"/>
+        <result property="usertype" column="userType" jdbcType="VARCHAR"/>
+        <result property="regtime" column="regTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <update id="update" parameterType="TUserinfo">
+        update t_userinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="password != null">password=#{password},</if>
+            <if test="userphoto != null">userPhoto=#{userphoto},</if>
+            <if test="usertype != null">userType=#{usertype}</if>
+        </trim>
+        <where>
+            user_name=#{userName}
+        </where>
+    </update>
+    <delete id="deleteById">
+        delete from t_userinfo where user_name=#{name}
+    </delete>
+
+    <delete id="deleteCommentByuser" >
+        delete from t_comment where userObj=#{name}
+    </delete>
+
+    <delete id="deleteOrderByuser">
+        delete from t_movieorder where userObj=#{name}
+    </delete>
+
+    <select id="findbyUsername" resultMap="TUserinfoMap">
+        select user_name,password,userPhoto,userType,regTime  from t_userinfo where user_name=#{name}
+    </select>
+    <select id="findall" resultMap="TUserinfoMap">
+        select user_name ,password,userPhoto,userType,regTime from t_userinfo
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_userinfo
+    </select>
+
+    <insert id="insert" parameterType="TUserinfo">
+        insert into t_userinfo(user_name, password, userPhoto, userType, regTime)
+        values (#{userName},#{password},#{userphoto},#{usertype},#{regtime})
+    </insert>
+
+
+    <insert id="registered" parameterType="TUserinfo">
+        insert into t_userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="userphoto != null">
+                userPhoto,
+            </if>
+            <if test="usertype != null">
+                userType,
+            </if>
+            <if test="regtime != null">
+                regTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+               #{password},
+            </if>
+            <if test="userphoto != null">
+                #{userphoto},
+            </if>
+            <if test="usertype != null">
+                #{usertype},
+            </if>
+            <if test="regtime != null">
+                #{regtime},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

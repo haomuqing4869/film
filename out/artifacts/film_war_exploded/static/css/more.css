@@ -1,0 +1,90 @@
+body{
+    background-color: #f2f2f2;
+}
+
+
+.input{
+    background-color: white;
+    box-shadow: 0 5px 5px #e9e9e9;
+}
+
+/* 内容，电影items */
+.mod_hd{
+    width: 100%;
+    margin-top: 108px;
+}
+.mod_hd .mod_hd_list{
+    width: 90%;
+    padding-left: 40px;
+    margin: 0 auto;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+.mod_hd .mod_hd_list .mod{
+    font-size: 18px;
+    color: white;
+    padding: 5px;
+    border: 1px solid rgb(127, 127, 140);
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    text-align: center; 
+    line-height: 50px;
+    background-color: rgb(127, 127, 140);
+}
+
+.mod_items{
+    display: inline-block;
+    font-size: 18px;
+    color: rgb(153, 153, 153);
+    padding: 10px;
+    box-sizing: content-box;
+}
+
+
+.mod_items:first-of-type{
+    margin-left: 25px;
+}
+
+.mod_items:hover{
+    color:orangered
+}
+
+.more-movies{
+    width: 100%;
+}
+
+.movies_items{
+    width: 90%;
+    padding: 30px;
+    margin: 0 auto;
+    margin-top: 25px;
+    border-radius: 3px;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.message{
+    margin-right: 30px;
+}
+
+/* 点击的字体颜色 */
+.orangered{
+    color: orangered;
+}
+
+.page{
+    width: 200px;
+    margin: 10px auto;
+}
+
+
+.name_price h3{
+    float: left;
+}
+
+.name_price .price{
+    float: right;
+}

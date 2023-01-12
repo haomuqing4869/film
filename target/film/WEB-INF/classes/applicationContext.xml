@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--开启注解扫描，扫描除controller之外的-->
+    <context:component-scan base-package="com.zxl">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!--整合mybatis-->
+    <!--加载数据库配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--配置链接池-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--配置sqlSessionfactory工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--取别名-->
+        <property name="typeAliasesPackage" value="com.zxl.entity"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!--配置xml文件路径-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!--配置分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <props>
+                            <prop key="helperDialect">mysql</prop>
+                            <prop key="reasonable">true</prop>
+                        </props>
+
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+    <!--配置dao接口所在包-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zxl.dao"/>
+    </bean>
+    <!--配置spring的声明式事务管理-->
+
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--配置事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*" isolation="DEFAULT"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置Aop增强-->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.zxl.service.impl.*ServiceImpl.*(..))"/>
+    </aop:config>
+    <!--&lt;!&ndash;管理通知类&ndash;&gt;-->
+    <!--<bean id="aspectaop" class="com.zxl.aop.ControllerAspect"></bean>-->
+    <!--&lt;!&ndash;Aop配置&ndash;&gt;-->
+    <!--<aop:config>-->
+        <!--<aop:aspect id="txaop" ref="aspectaop">-->
+            <!--<aop:before method="doBefore" pointcut="execution(* com.zxl.controller.*.*(..))"></aop:before>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+</beans>

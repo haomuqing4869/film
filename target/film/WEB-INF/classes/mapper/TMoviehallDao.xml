@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TMoviehallDao">
+
+    <resultMap type="com.zxl.entity.TMoviehall" id="TMoviehallMap">
+        <result property="moviehallid" column="movieHallId" jdbcType="INTEGER"/>
+        <result property="moviehallname" column="movieHallName" jdbcType="VARCHAR"/>
+        <result property="rows" column="rows" jdbcType="INTEGER"/>
+        <result property="cols" column="cols" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TMoviehallMap">
+        select
+        *
+        from movie.t_moviehall
+        where movieHallId = #{moviehallid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TMoviehallMap">
+        select
+        *
+        from movie.t_moviehall
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TMoviehallMap">
+        select
+        *
+        from movie.t_moviehall
+        <where>
+            <if test="moviehallid != null">
+                and movieHallId = #{moviehallid}
+            </if>
+            <if test="moviehallname != null and moviehallname != ''">
+                and movieHallName = #{moviehallname}
+            </if>
+            <if test="rows != null">
+                and rows = #{rows}
+            </if>
+            <if test="cols != null">
+                and cols = #{cols}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="moviehallid" useGeneratedKeys="true">
+        insert into movie.t_moviehall(`movieHallName`, `rows`, `cols`)
+        values (#{moviehallname}, #{rows}, #{cols})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movie.t_moviehall
+        <set>
+            <if test="moviehallname != null and moviehallname != ''">
+                movieHallName = #{moviehallname},
+            </if>
+            <if test="rows != null">
+               `rows`  = #{rows},
+            </if>
+            <if test="cols != null">
+                cols = #{cols},
+            </if>
+        </set>
+        where movieHallId = #{moviehallid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from movie.t_moviehall where movieHallId = #{moviehallid}
+    </delete>
+    <delete id="deleteSC">
+        delete from t_schedule where hallObj=#{hid}
+    </delete>
+
+</mapper>

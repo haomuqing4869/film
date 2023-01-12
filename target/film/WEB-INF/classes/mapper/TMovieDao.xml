@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TMovieDao">
+
+    <resultMap type="com.zxl.entity.TMovie" id="TMovieMap">
+        <result property="movieid" column="movieId" jdbcType="INTEGER"/>
+        <result property="moviename" column="movieName" jdbcType="VARCHAR"/>
+        <result property="moviephoto" column="moviePhoto" jdbcType="VARCHAR"/>
+        <result property="director" column="director" jdbcType="VARCHAR"/>
+        <result property="mainperformer" column="mainPerformer" jdbcType="VARCHAR"/>
+        <result property="duration" column="duration" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+        <result property="releasedate" column="releaseDate" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="OTHER"/>
+        <result property="opera" column="opera" jdbcType="VARCHAR"/>
+        <result property="hit" column="hit"/>
+        <association property="tSchedule" javaType="TSchedule">
+            <result property="scheduleid" column="scheduleId"/>
+        </association>
+
+        <collection property="sorts" ofType="TSort">
+            <result property="sorts" column="sorts"/>
+            <result property="id" column="sid"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.zxl.entity.TMovie" id="baseMapper">
+        <result property="movieid" column="movieId" jdbcType="INTEGER"/>
+        <result property="moviename" column="movieName" jdbcType="VARCHAR"/>
+        <result property="moviephoto" column="moviePhoto" jdbcType="VARCHAR"/>
+        <result property="director" column="director" jdbcType="VARCHAR"/>
+        <result property="mainperformer" column="mainPerformer" jdbcType="VARCHAR"/>
+        <result property="duration" column="duration" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+        <result property="releasedate" column="releaseDate" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="OTHER"/>
+        <result property="opera" column="opera" jdbcType="VARCHAR"/>
+        <result property="hit" column="hit"/>
+        <association property="tSchedule" javaType="TSchedule"
+                     select="com.zxl.dao.TScheduleDao.selectByMid" column="movieId">
+        </association>
+        <collection property="sorts" ofType="TSort" javaType="java.util.List"
+                    select="com.zxl.dao.TSortDao.findMS" column="movieId">
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TMovieMap">
+        SELECT m.movieId,
+               m.movieName,
+               m.moviePhoto,
+               m.director,
+               m.mainPerformer,
+               m.duration,
+               m.area,
+               m.releaseDate,
+               m.price,
+               m.opera,
+               m.hit,
+               s.id sid,
+               s.sorts
+        FROM t_movie m
+                 JOIN t_sort_movie sm ON m.movieId = sm.movieid
+                 JOIN t_sort s ON sm.sortsid = s.id
+        WHERE m.movieId = #{movieid}
+    </select>
+
+    <!--查询所有数据-->
+    <select id="findall" resultMap="baseMapper">
+        SELECT movieId,
+               movieName,
+               moviePhoto,
+               director,
+               mainPerformer,
+               duration,
+               AREA,
+               releaseDate,
+               price,
+               opera,
+               hit
+        FROM t_movie
+        ORDER BY movieId DESC, releaseDate DESC
+    </select>
+
+    <!--查询数据的总条数-->
+    <select id="findCount" resultType="java.lang.Integer">
+        SELECT COUNT(movieId)
+        FROM t_movie
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TMovieMap">
+        select
+        movieId, movieName, moviePhoto, director, mainPerformer, duration, area, releaseDate, price, opera
+        from movie.t_movie
+        <where>
+            <if test="moviename != null and moviename != ''">
+                and movieName = #{moviename}
+            </if>
+            <if test="moviephoto != null and moviephoto != ''">
+                and moviePhoto = #{moviephoto}
+            </if>
+            <if test="director != null and director != ''">
+                and director = #{director}
+            </if>
+            <if test="mainperformer != null and mainperformer != ''">
+                and mainPerformer = #{mainperformer}
+            </if>
+            <if test="duration != null and duration != ''">
+                and duration = #{duration}
+            </if>
+            <if test="area != null and area != ''">
+                and area = #{area}
+            </if>
+            <if test="releasedate != null and releasedate != ''">
+                and releaseDate = #{releasedate}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="opera != null and opera != ''">
+                and opera = #{opera}
+            </if>
+        </where>
+        order by m.movieId desc
+    </select>
+    <!--通过电影类型来查询电影-->
+    <select id="findBySort" resultMap="TMovieMap">
+        select m.movieId,
+               m.movieName,
+               m.moviePhoto,
+               m.director,
+               m.mainPerformer,
+               m.duration,
+               m.area,
+               m.releaseDate,
+               m.price,
+               m.opera,
+               s.id sid,
+               s.sorts
+        from t_movie m
+                 join t_sort_movie sm on m.movieId = sm.movieid
+                 join t_sort s on sm.sortsid = s.id
+        where s.id = #{sid}
+
+    </select>
+    <select id="countHit" resultType="TSort">
+        SELECT ts.sorts, SUM(tm.hit) hit
+        FROM t_movie tm
+                 JOIN t_sort_movie tms ON tm.movieId = tms.movieid
+                 JOIN t_sort ts ON ts.id = tms.sortsid
+        GROUP BY ts.sorts
+    </select>
+
+    <select id="findSome" resultMap="TMovieMap" parameterType="TMovie">
+        select
+        movieId, movieName, moviePhoto, director, mainPerformer, duration, area, releaseDate, price, opera
+        from movie.t_movie
+        <where>
+            <if test="moviename != null and moviename != ''">
+                and movieName like #{moviename}
+            </if>
+
+            <if test="director != null and director != ''">
+                and director like #{director}
+            </if>
+            <if test="mainperformer != null and mainperformer != ''">
+                and mainPerformer like #{mainperformer}
+            </if>
+        </where>
+
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="movieid" useGeneratedKeys="true">
+        insert into movie.t_movie(movieName, moviePhoto, director, mainPerformer, duration, area, releaseDate, price,
+                                  opera)
+        values (#{moviename}, #{moviephoto}, #{director}, #{mainperformer}, #{duration}, #{area}, #{releasedate},
+                #{price}, #{opera})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movie.t_movie
+        <set>
+            <if test="moviename != null and moviename != ''">
+                movieName = #{moviename},
+            </if>
+            <if test="moviephoto != null and moviephoto != ''">
+                moviePhoto = #{moviephoto},
+            </if>
+            <if test="director != null and director != ''">
+                director = #{director},
+            </if>
+            <if test="mainperformer != null and mainperformer != ''">
+                mainPerformer = #{mainperformer},
+            </if>
+            <if test="duration != null and duration != ''">
+                duration = #{duration},
+            </if>
+            <if test="area != null and area != ''">
+                area = #{area},
+            </if>
+            <if test="releasedate != null and releasedate != ''">
+                releaseDate = #{releasedate},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="opera != null and opera != ''">
+                opera = #{opera},
+            </if>
+            <if test="hit != null and hit != ''">
+                hit=#{hit}
+            </if>
+        </set>
+        where movieId = #{movieid}
+    </update>
+
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from movie.t_movie
+        where movieId = #{movieid}
+    </delete>
+    <!--根据名字模糊查询-->
+    <select id="findByname" resultMap="TMovieMap">
+        SELECT m.movieId,
+               m.movieName,
+               m.moviePhoto,
+               m.director,
+               m.mainPerformer,
+               m.duration,
+               m.area,
+               m.releaseDate,
+               m.price,
+               m.opera,
+               s.sorts,
+               s.id sid
+        FROM t_movie m
+                 JOIN t_sort_movie sm ON m.movieId = sm.movieid
+                 JOIN t_sort s ON sm.sortsid = s.id
+        where m.movieName like #{name}
+    </select>
+    <select id="tMovieTop" resultType="com.zxl.entity.TMovie">
+        SELECT *
+        FROM t_movie
+        ORDER BY hit desc
+        LIMIT 10
+    </select>
+    <select id="findmoviesBySort" resultType="com.zxl.entity.TMovie">
+        SELECT movieId,
+               movieName,
+               moviePhoto,
+               director,
+               mainPerformer,
+               duration,
+               AREA,
+               releaseDate,
+               price,
+               opera,
+               hit
+        FROM t_movie
+        where movieId in (select t_sort_movie.movieid from t_sort_movie where sortsid = #{id})
+        ORDER BY hit DESC
+    </select>
+    <select id="findTopBySort" resultType="com.zxl.entity.TMovie">
+        SELECT movieId,
+               movieName,
+               moviePhoto,
+               director,
+               mainPerformer,
+               duration,
+               AREA,
+               releaseDate,
+               price,
+               opera,
+               hit
+        FROM t_movie
+        where movieId in (select t_sort_movie.movieid from t_sort_movie where sortsid = #{id})
+        ORDER BY hit DESC limit #{start}, #{limit}
+    </select>
+
+    <select id="countBysort" resultType="java.lang.Integer">
+        SELECT count(movieId)
+        FROM t_movie
+        where movieId in (select t_sort_movie.movieid from t_sort_movie where sortsid = #{id})
+        ORDER BY movieId DESC, releaseDate
+    </select>
+</mapper>

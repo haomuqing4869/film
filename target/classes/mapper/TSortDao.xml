@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TSortDao">
+
+    <resultMap type="com.zxl.entity.TSort" id="TSortMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="sorts" column="sorts" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--通过电影Id来查询分类信息-->
+    <select id="findMS" resultType="TSort">
+        SELECT ts.id,ts.sorts FROM t_sort ts JOIN t_sort_movie tsm ON ts.id=tsm.sortsid WHERE tsm.movieid=#{id}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TSortMap">
+        select id,
+               sorts
+        from movie.t_sort
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TSortMap">
+        select id,
+               sorts
+        from movie.t_sort
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TSortMap">
+        select
+        id, sorts
+        from movie.t_sort
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="sorts != null and sorts != ''">
+                and sorts = #{sorts}
+            </if>
+        </where>
+    </select>
+    <select id="findNotByMid" resultType="com.zxl.entity.TSort">
+        select *
+        from t_sort
+        where id not in (select sortsid from t_sort_movie where movieid = #{mid})
+    </select>
+
+
+    <select id="findByMid">
+        select sortsid
+        from t_sort_movie
+        where movieid = #{movieid}
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into movie.t_sort(sorts)
+        values (#{sorts})
+    </insert>
+    <insert id="insertm_s">
+        insert into t_sort_movie (movieid, sortsid)
+        values (#{mid}, #{sid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movie.t_sort
+        <set>
+            <if test="sorts != null and sorts != ''">
+                sorts = #{sorts},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from movie.t_sort
+        where id = #{id}
+    </delete>
+    <delete id="deleteByMid">
+        delete
+        from t_sort_movie
+        where movieid = #{mid}
+    </delete>
+    <delete id="deletetByMid">
+        delete
+        from t_sort_movie
+        where movieid = #{mid}
+    </delete>
+    <delete id="deletems">
+        delete from t_sort_movie where sortsid=#{sid}
+    </delete>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from t_sort
+    </select>
+</mapper>

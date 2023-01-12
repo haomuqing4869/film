@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TScheduleDao">
+
+    <resultMap type="com.zxl.entity.TSchedule" id="TScheduleMap">
+        <result property="scheduleid" column="scheduleId" jdbcType="INTEGER"/>
+        <result property="movieobj" column="movieObj" jdbcType="INTEGER"/>
+        <result property="hallobj" column="hallObj" jdbcType="INTEGER"/>
+        <result property="scheduledate" column="scheduleDate" jdbcType="VARCHAR"/>
+        <result property="scheduletime" column="scheduleTime" jdbcType="VARCHAR"/>
+        <association property="tMovie" javaType="TMovie">
+            <result property="moviename" column="moviename"/>
+        </association>
+        <collection property="moviehalls" ofType="TMoviehall">
+            <result property="moviehallid" column="moviehallid"/>
+            <result property="moviehallname" column="moviehallname"/>
+            <result property="cols" column="cols"/>
+            <result property="rows" column="row"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TScheduleMap">
+        select scheduleId,
+               movieObj,
+               hallObj,
+               scheduleDate,
+               scheduleTime
+        from movie.t_schedule
+        where scheduleId = #{scheduleid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TScheduleMap">
+        select scheduleId,
+               movieObj,
+               hallObj,
+               scheduleDate,
+               scheduleTime
+        from movie.t_schedule
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TScheduleMap">
+        select
+        scheduleId, movieObj, hallObj, scheduleDate, scheduleTime
+        from movie.t_schedule
+        <where>
+            <if test="scheduleid != null">
+                and scheduleId = #{scheduleid}
+            </if>
+            <if test="movieobj != null">
+                and movieObj = #{movieobj}
+            </if>
+            <if test="hallobj != null">
+                and hallObj = #{hallobj}
+            </if>
+            <if test="scheduledate != null and scheduledate != ''">
+                and scheduleDate = #{scheduledate}
+            </if>
+            <if test="scheduletime != null and scheduletime != ''">
+                and scheduleTime = #{scheduletime}
+            </if>
+        </where>
+    </select>
+    <select id="findBymovieID" resultMap="TScheduleMap">
+        SELECT *
+        FROM t_schedule
+        WHERE movieObj = #{id}
+    </select>
+
+    <!--查询所有-->
+    <select id="findAll" resultMap="TScheduleMap">
+        SELECT tm.movieName,
+               s.hallObj,
+               s.movieObj,
+               s.scheduleId,
+               s.scheduleDate,
+               s.scheduleTime,
+               m.movieHallId,
+               m.movieHallName
+        FROM t_schedule s
+                 JOIN t_moviehall m
+                      ON s.hallObj = m.movieHallId
+                 JOIN t_movie tm
+                      ON s.movieObj = tm.movieId
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_schedule
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="scheduleid" useGeneratedKeys="true">
+        insert into movie.t_schedule(movieObj, hallObj, scheduleDate, scheduleTime)
+        values (#{movieobj}, #{hallobj}, #{scheduledate}, #{scheduletime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movie.t_schedule
+        <set>
+            <if test="movieobj != null">
+                movieObj = #{movieobj},
+            </if>
+            <if test="hallobj != null">
+                hallObj = #{hallobj},
+            </if>
+            <if test="scheduledate != null and scheduledate != ''">
+                scheduleDate = #{scheduledate},
+            </if>
+            <if test="scheduletime != null and scheduletime != ''">
+                scheduleTime = #{scheduletime},
+            </if>
+        </set>
+        where scheduleId = #{scheduleid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from movie.t_schedule
+        where scheduleId = #{scheduleid}
+    </delete>
+    <!--通过电影id删除-->
+    <delete id="deleteByMid">
+        delete
+        from t_schedule
+        where movieObj = #{mid}
+    </delete>
+
+    <!--根据电影ID来查询-->
+    <select id="selectByMid" resultType="TSchedule">
+        select scheduleId from t_schedule where movieObj=#{id}
+    </select>
+</mapper>

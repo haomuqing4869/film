@@ -1,0 +1,191 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+
+ul{
+    list-style: none;
+}
+
+
+/* 输入框 */
+.input{
+    width: 100%;
+    height: 68px;
+    /* background-color: rgba(35, 63, 80, 0.5); */
+    position: relative;
+    display: -webkit-flex;
+    display: flex;
+    padding: 15px;
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    background-color: rgb(255, 255, 255);
+}
+.input .input-container{
+    width: 360px;
+    height: 38px;
+    margin: 0 auto;
+}
+
+/*.input .input-container input{*/
+    /*width: 203px;*/
+    /*height: 100%;*/
+    /*padding-left: 15px;*/
+    /*outline: none;*/
+    /*border: 1px black solid;*/
+    /*border-top-left-radius: 2em;*/
+    /*border-bottom-left-radius: 2em;*/
+/*}*/
+
+/*.input .input-container input:focus{*/
+    /*!* border: 2px solid black; *!*/
+    /*box-shadow:0 0 10px rgb(216, 183, 212);*/
+/*}*/
+
+/*.input .input-container .input-group .input-group-prepend .input-group-text{*/
+    /*height: 35px;*/
+    /*width: auto;*/
+    /*background-color: rgba(248, 249, 250, 0.5);*/
+    /*border: 1px solid black;*/
+    /*border-left: 0px;*/
+    /*outline: none;*/
+    /*border-top-right-radius: 2em;*/
+    /*border-bottom-right-radius: 2em;*/
+/*}*/
+/*.input .input-container input:focus .input-group-text{*/
+    /*!* border: 2px solid black; *!*/
+    /*box-shadow:0 0 10px rgb(116, 114, 115);*/
+/*}*/
+.input .admin{
+    width: 74px;
+    height: 38px;
+    border: 1px solid #666;
+    border-radius: 2em;
+    text-align: center;
+    font-size: 14px;
+    line-height: 38px;
+    position: absolute;
+    right: 14%;
+}
+.input .login{
+    width: 74px;
+    height: 38px;
+    border: 1px solid #666;
+    border-radius: 2em;
+    text-align: center;
+    font-size: 14px;
+    line-height: 38px;
+    position: absolute;
+    right: 8%;
+}
+
+.input .login a{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: black;
+}
+
+.usrmess{
+    width: 150px;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #666;
+    border-radius: 10px;
+    position: absolute;
+    right: 8%;
+    top: 40px;
+    box-sizing: border-box;
+    display: none;
+}
+
+.login .usrmess a{
+    display: block;
+    width: 100%;
+    height: 33px;
+    font-size: 16px;
+    line-height: 33px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    margin-top: 16px;
+}
+
+
+
+.search-box {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    background: #e8e8e8;
+    height: 40px;
+    border-radius: 40px;
+    padding: 10px;
+}
+.search-btn {
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 25px;
+    border: none;
+    border-radius: 50%;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    text-decoration: none;
+}
+.search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: black;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 20px;
+    width: 0;
+}
+.search-box:hover > .search-txt {
+    width: 240px;
+    padding: 0 6px;
+}
+.search-box:hover > .search-btn {
+    background: white;
+    color: #e84118;
+}
+
+.search-btn:focus{
+    outline: none;
+}
+
+
+/* 清除浮动 */
+.clear:after{
+    content:'';
+    display:block;
+    clear:both;
+}
+
+/* logo */
+.logo{
+    width: 200px;
+    height: 98px;
+    position: absolute;
+    top: -30px;
+    left: 150px;
+    overflow: hidden;
+}
+
+.logo img{
+    width: 100%;
+    height: 136px;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+    <!-- 配置不过滤的资源（静态资源及登录相关） -->
+    <security:http pattern="/login.jsp" security="none"/>
+    <security:http pattern="/index.jsp" security="none"/>
+    <security:http pattern="/failer.jsp" security="none"/>
+    <security:http pattern="/static/**" security="none"/>
+    <security:http pattern="/captcha" security="none"/>
+    <security:http pattern="/pages/movie_detils.jsp" security="none"/>
+    <security:http pattern="/pages/movie_list.jsp" security="none"/>
+    <security:http pattern="/movies/**" security="none"/>
+    <security:http pattern="/user/registered" security="none"/>
+
+
+    <security:http auto-config="false" use-expressions="true">
+        <!-- 配置具体的拦截的规则 pattern="请求路径的规则" access="访问系统的人，必须有ROLE_USER的角色" -->
+        <!--普通用户和管理员都可以访问的-->
+        <security:intercept-url pattern="/comment/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <security:intercept-url pattern="/movies/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <security:intercept-url pattern="/user/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <security:intercept-url pattern="/hall/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <security:intercept-url pattern="/userorder/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <!--只有管理员可以访问-->
+        <security:intercept-url pattern="/sys*/**" access="hasAnyAuthority('ROLE_ADMIN')"/>
+
+
+        <security:custom-filter ref="captchaFilter" before="FORM_LOGIN_FILTER"/>
+
+        <security:remember-me
+                data-source-ref="dataSource"/>
+        <!-- 定义跳转的具体的页面 -->
+        <security:form-login
+                login-page="/login.jsp"
+                login-processing-url="/login"
+                default-target-url="/index.jsp"
+                authentication-failure-url="/failer.jsp"
+                authentication-success-forward-url="/index.jsp"
+                authentication-success-handler-ref="loginSuccessHandler"
+        />
+
+
+        <!-- 关闭跨域请求 -->
+        <security:csrf disabled="true"/>
+        <!-- 退出 -->
+        <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.jsp"/>
+
+    </security:http>
+
+    <!-- 切换成数据库中的用户名和密码 -->
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="tUserinfoService">
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!-- 配置加密类 -->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <!--配置自己的过滤器-->
+    <bean id="captchaFilter" class="com.zxl.filter.CaptchaFilter"/>
+    <!--处理拦截跳转的handler-->
+    <bean id="loginSuccessHandler" class="com.zxl.handler.LoginSuccessHandler" />
+
+    <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+</beans>

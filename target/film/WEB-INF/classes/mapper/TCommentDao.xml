@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.dao.TCommentDao">
+
+    <resultMap type="com.zxl.entity.TComment" id="TCommentMap">
+        <result property="commentid" column="commentId" jdbcType="INTEGER"/>
+        <result property="movieobj" column="movieObj" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="userobj" column="userObj" jdbcType="VARCHAR"/>
+        <result property="commenttime" column="commentTime" jdbcType="VARCHAR"/>
+        <association property="tMovie" javaType="TMovie">
+            <result property="moviename" column="movieName"/>
+        </association>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TCommentMap">
+        select
+        commentId, movieObj, content, userObj, commentTime
+        from movie.t_comment
+        where commentId = #{commentid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TCommentMap">
+        select
+        commentId, movieObj, content, userObj, commentTime
+        from movie.t_comment
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TCommentMap">
+        select
+        commentId, movieObj, content, userObj, commentTime
+        from movie.t_comment
+        <where>
+            <if test="commentid != null">
+                and commentId = #{commentid}
+            </if>
+            <if test="movieobj != null">
+                and movieObj = #{movieobj}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="userobj != null and userobj != ''">
+                and userObj = #{userobj}
+            </if>
+            <if test="commenttime != null and commenttime != ''">
+                and commentTime = #{commenttime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="commentid" useGeneratedKeys="true">
+        insert into movie.t_comment(movieObj, content, userObj, commentTime)
+        values (#{movieobj}, #{content}, #{userobj}, #{commenttime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movie.t_comment
+        <set>
+            <if test="movieobj != null">
+                movieObj = #{movieobj},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="userobj != null and userobj != ''">
+                userObj = #{userobj},
+            </if>
+            <if test="commenttime != null and commenttime != ''">
+                commentTime = #{commenttime},
+            </if>
+        </set>
+        where commentId = #{commentid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from movie.t_comment where commentId = #{commentid}
+    </delete>
+    <delete id="deleteByMid">
+        delete from t_comment where movieObj=#{id}
+    </delete>
+    <!--汇总-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_comment
+    </select>
+    <select id="selectAll" resultMap="TCommentMap">
+        select tc.*,tm.movieName from t_comment tc join t_movie tm on tc.movieObj=tm.movieId
+    </select>
+</mapper>
