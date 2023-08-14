@@ -9,7 +9,7 @@
         <module name="film" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
       <module name="film" target="1.8" />
     </bytecodeTargetLevel>
   </component>

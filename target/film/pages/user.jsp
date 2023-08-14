@@ -24,7 +24,7 @@
         <div class="user">
             <img src="${pageContext.request.contextPath}${me.userphoto}" alt="">
             <p class="user-name">${me.userName}</p>
-            <p class="user-a"><a href="${pageContext.request.contextPath}/user/find">编辑个人资料</a></p>
+            <p class="user-a"><a href="${pageContext.request.contextPath}/user/find">个人资料</a></p>
         </div>
         <div class="jiange"></div>
         <ul>
@@ -35,7 +35,7 @@
 
     <div class="userinfo">
         <div class="myart">
-            <p class="currenthead" id="userinfo_head1">个人资料</p>
+            <p class="currenthead" id="userinfo_head1"></p>
 
         </div>
 
@@ -57,11 +57,11 @@
                     <input type="text" name="userName" value="${me.userName}">
                 </div>
 
-                <div class="from-group">
-                    <label>密码</label>
-                    <input type="password" name="password" value="${me.password}">
-                </div>
-                <button class="btn btn-primary form-btn" type="submit"><span>保存</span></button>
+<%--                <div class="from-group">--%>
+<%--                    <label>密码</label>--%>
+<%--                    <input type="password" name="password" value="${me.password}">--%>
+<%--                </div>--%>
+<%--                <button class="btn btn-primary form-btn" type="submit"><span>保存</span></button>--%>
             </form>
         </div>
 

@@ -10,6 +10,9 @@ import java.util.List;
  *
  * @author makejava
  * @since 2021-10-05 10:18:02
+ *
+ * 管理员：admin 123456
+ * 用户：hzm 123456
  */
 public interface TCommentDao {
 

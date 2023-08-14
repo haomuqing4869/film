@@ -25,7 +25,7 @@
         <div class="user">
             <img src="${pageContext.request.contextPath}${me.userphoto}" alt="">
             <p class="user-name">${me.userName}</p>
-            <p class="user-a"><a href="${pageContext.request.contextPath}/user/find">编辑个人资料</a></p>
+            <p class="user-a"><a href="${pageContext.request.contextPath}/user/find">个人资料</a></p>
         </div>
         <div class="jiange"></div>
         <ul>
